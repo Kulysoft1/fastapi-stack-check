@@ -67,10 +67,10 @@ Render's free plan includes one free web service, a free 1 GB Postgres, and a fr
 
 ### Manual deploy steps
 1. **Fork** this repository to your GitHub account.
-2. **Create the PostgreSQL database**: Dashboard → **New +** → **PostgreSQL** → plan `Free`, name `fastapi-demo-db`, database `fastapi_demo`. Wait until status is **Available**, then copy the **Internal Database URL** (or External if you deploy cross-region).
-3. **Create the Redis store**: Dashboard → **New +** → **Redis (Key Value)** → plan `Free`, name `fastapi-demo-redis`, maxmemoryPolicy `noeviction`. Copy its **Internal Redis URL**.
-4. **Create the web service**: Dashboard → **New +** → **Web Service** → connect your fork → runtime `Docker` → plan `Free`. In **Health Check Path** put `/health/ready`.
-5. Under the web service's **Environment** tab, add:
+2. **Create the PostgreSQL database**: Dashboard → **New +** → **PostgreSQL** → name `fastapi-demo-db`, database `fastapi_demo`. Wait until status is **Available**, then copy the **Internal Database URL** (or External if you deploy cross-region).
+3. **Create the Redis store**: Dashboard → **New +** → **Key Value** → name `fastapi-demo-redis`, maxmemoryPolicy `noeviction`. Copy its **Internal Redis URL**.
+4. **Create the web service**: Dashboard → **New +** → **Web Service** → Public Git Repository -> `Paste your repo URL` -> Connect -> Use `Docker`
+5. Under the web service's **Environment Variables** tab, add:
    ```
    DATABASE_URL = <paste Postgres Internal URL>
    REDIS_URL    = <paste Redis Internal URL>
@@ -97,19 +97,18 @@ Render's free plan includes one free web service, a free 1 GB Postgres, and a fr
 
 Railway's "free" plan is a one-time **$5 credit** (trial), not a permanent free tier. After the credit is exhausted, every service (web, Postgres, Redis) stops until you upgrade or add a paid plan. Plan accordingly.
 
-1. In the Railway dashboard: **New Project** → **Deploy from GitHub repo**, select your fork.
-2. **Add plugins** to the same project: **PostgreSQL** + **Redis**.
-3. Open the web service's **Variables** tab and set:
+1. In the Railway dashboard: **New Project** → Database → Postgresql → Wait to deploy
+2. In the Railway dashboard newly created: Right click → Database → Redis
+3. In the Railway dashboard newly created: Right click → **GitHub repo**, Input your fork -> Deploy
+4. Click on `fast-api-stack` -> **Variables** -> Add variable -> Select URLS -> Add
+5. Open the web service's **Variables** tab and set:
    ```
    DATABASE_URL = ${{Postgres.DATABASE_URL}}
    REDIS_URL    = ${{Redis.REDIS_URL}}
    ENVIRONMENT  = prod
    ```
    Railway resolves the `${{...}}` references at deploy time, so they always point at the provisioned plugins.
-4. **Settings → Build**: builder = `Dockerfile` (Railway reads `railway.toml`).
-5. **Settings → Deploy**: start command is `alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT` (from `railway.toml`), restart policy `ON_FAILURE`, max retries 3.
-6. Redeploy. `alembic upgrade head` runs on every start, so schema is always up to date.
-7. Open the generated domain (Settings → Domains → Generate).
+6. Open the generated domain (Settings → Domains → Generate).
 
 ### Railway free-tier (credit) limitations & breakage notes
 - **$5 one-time credit**, not forever free. CPU, memory, egress and DB/Redis all burn credit. A small always-on service with a free Postgres + Redis plugin will typically last ~1–3 months on $5.
