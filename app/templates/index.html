@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FastAPI Stack Check</title>
+<link rel="stylesheet" href="/static/style.css?v=4">
+</head>
+<body>
+<header class="topbar">
+<h1>FastAPI Stack Check</h1>
+<div class="pills">
+<span class="pill" id="pg-pill" data-service="postgres">Postgres: <span class="status unknown">checking…</span></span>
+<span class="pill" id="redis-pill" data-service="redis">Redis: <span class="status unknown">checking…</span></span>
+</div>
+</header>
+<main class="panels">
+<section class="panel" id="pg-panel">
+<h2>PostgreSQL</h2>
+<form id="note-form" class="form">
+<input id="note-title" type="text" placeholder="Title" required maxlength="255">
+<textarea id="note-body" placeholder="Body" required rows="3"></textarea>
+<button type="submit" class="btn primary">Add note</button>
+</form>
+<div id="notes-list" class="list"></div>
+</section>
+<section class="panel" id="kv-panel">
+<h2>Redis</h2>
+<form id="kv-form" class="form">
+<input id="kv-key" type="text" placeholder="Key" required maxlength="255">
+<input id="kv-value" type="text" placeholder="Value" required>
+<div class="form-row">
+<input id="kv-ttl" type="number" placeholder="TTL (seconds, optional)" min="1" step="1">
+</div>
+<button type="submit" class="btn primary">Set key</button>
+</form>
+<div id="kv-list" class="list"></div>
+</section>
+</main>
+<script src="/static/app.js?v=4"></script>
+</body>
+</html>
