@@ -25,9 +25,6 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["app", "alembic"]
 
-[tool.uv]
-dev-dependencies = []
-
 [tool.alembic]
 script_location = "alembic"
 prepend_sys_path = "."

@@ -17,6 +17,8 @@ RUN uv sync --frozen --no-install-project --no-dev
 COPY app ./app
 COPY alembic ./alembic
 COPY alembic.ini ./
+# README.md is required by hatchling (readme = "README.md" in pyproject.toml)
+COPY README.md ./
 
 # Install project
 RUN uv sync --frozen --no-dev

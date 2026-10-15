@@ -177,9 +177,6 @@ requires-dist = [
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.32.0" },
 ]
 
-[package.metadata.requires-dev]
-dev = []
-
 [[package]]
 name = "greenlet"
 version = "3.5.6"
