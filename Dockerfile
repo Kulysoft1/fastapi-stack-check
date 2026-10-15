@@ -29,8 +29,7 @@ FROM python:3.12-slim AS runtime
 # Create non-root user
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
-# Copy uv and virtual environment from builder
-COPY --from=builder /uv /uvx /bin/
+# Copy the virtual environment from the builder (uv is build-time only)
 COPY --from=builder /app/.venv /app/.venv
 
 # Set working directory
